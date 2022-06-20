@@ -1,6 +1,10 @@
 package org.mdp.hadoop.cli;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -50,7 +54,6 @@ public class CountWords {
 	public static class CountWordsMapper extends Mapper<Object, Text, Text, IntWritable>{
 
 		private final IntWritable one = new IntWritable(1);
-		private Text word = new Text();
 
 		
 		/**
@@ -63,15 +66,34 @@ public class CountWords {
 		 @Override
 		public void map(Object key, Text value, Context output)
 						throws IOException, InterruptedException {
-			String line = value.toString();
-			String[] rawWords = line.split(SPLIT_REGEX);
-			for(String rawWord:rawWords) {
-				if(!rawWord.isEmpty()){
-					word.set(rawWord.toLowerCase());
-					output.write(word, one);
+				String content = value.toString();
+				String[] lines = content.split("\n");
+				String[] values;
+				Hashtable<String, List<String>> animeDict = new Hashtable<String, List<String>>();
+				String animeKey;
+				String reviewer;
+				for(String line:lines) {
+					values = line.split(",");
+					animeKey = values[3];
+					reviewer = values[2];
+					if(animeDict.containsKey(animeKey)) {
+						animeDict.get(animeKey).add(reviewer);
+					}
+					else {
+						List<String> reviewers = new ArrayList<String>();
+						reviewers.add(reviewer);
+						animeDict.put(animeKey, reviewers);
+					}
 				}
-			}
-		}
+				Set<String> setOfAnimes = animeDict.keySet();
+				for(String anime:setOfAnimes) {
+					List<String> scores = animeDict.get(anime);
+					int l = scores.size();
+					for(int i = 0; i < l; i++) {
+						output.write(new Text(anime), one);
+					}
+				}
+		 }
 	}
 
 	/**
@@ -144,5 +166,5 @@ public class CountWords {
 	     
 	    job.setJarByClass(CountWords.class);
 		job.waitForCompletion(true);
-	}	
+	}
 }
