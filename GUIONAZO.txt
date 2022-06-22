@@ -28,6 +28,13 @@ animés que consideramos.
 Este proceso bajó el tamaño de nuestra base de datos de 13.7 Gb a solo 23 Mb.
 
 BENJAMÍN AGUILAR.
+
+Una vez filtrados los datos, fue necesario obtener de alguna forma la cantidad de reseñas para cada uno. Para esto se hizo un MAP-REDUCE en Hadoop, usando como llaves los IDs de estos. 
+Finalmente, se obtuvo un archivo con dos columnas, la primera siendo el ID del anime y la segunda la cantidad de reviews que tenía.
+
+Teniendo los ID y cantidad de votos, había que buscar una forma de enlazar el primer argumento con su nombre y temporada correspondiente. Para esto se hizo un JOIN del archivo entregado por Hadoop (id, votos) con el archivo de animes filtrados inicialmente. Con esto se obtuvo la misma lista de animes filtrados, pero ahora incluyendo la cantidad de votos correspondiente. 
+
+
 	
 MAP-REDUCE EN HADOOP   
 	CONTAMOS REVIEWS EN CADA ANIME
