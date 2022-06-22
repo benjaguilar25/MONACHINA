@@ -1,16 +1,31 @@
 JOAQUÍN CARREÑO. 
 
-QUE ES ANIMELIST
-QUE DATOS TENIAMOS A MANO
-QUE QUERIAMOS HACER
+-Intro
+Soy Joaquín Carreño y con mi compañero Benjamín Aguilar nos propusimos como proyecto 
+analizar la base de datos de MyAnimeList, una red social donde usuarios pueden interactuar 
+entre sí y con páginas de series animé que pueden calificar y mantener un registro de cuales 
+han visto y su porcentaje de completitud. 
+En la base de datos que elegimos trabajar encontramos tablas en archivos csv con información 
+de todos los animes y usarios en la pagina, además de todas las interacciones usario-usuario 
+y usuario-anime.
+Nuestro objetivo era encontrar los animés más populares de cada temporada en cada año desde 
+2015 hasta 2020. En nuestra definición de popularidad no está incluido el factor calidad,
+por lo que para estimar la popular de una serie nos basaríamos solamente en la cantidad de 
+reseñas que tiene cada animé. Para esto usaríamos la tabla de interacciones usuario-anime y 
+contaríamos las filas que tengan una nota no vacía.
 
-QUE HICIMOS CON LOS DATOS INICIALES?
-	FILTRAR AÑO
-	ELIMINACION INTER. VACÍAS
-	(SOFTWARE -> COLAB)
-	RAZON -> 12 GB DE MIERDA 
-
---------------------------------------------------
+-Comienzo
+Debido a que teníamos un total de 12GB de datos solo en las tablas de interacciones nuestro 
+primer objetivo fue limpiar lo más posible los datos, ya que subirlas al servidor del curso 
+sería tarea monumental y probablemente cause problemas de almacenamiento.
+Decidimos aprovechar la capacidad de procesamiento que brinda Google Colab. Dentro de este 
+se preparó un pequeño script que instala el cliente de Kaggle para descargar los datos y luego 
+descomprimirlos en la carpeta apropiada (este script asume que existe un archivo kaggle.json 
+con el token de kaggle). 
+Filtramos los animes según su season para obtener los ids que nos serviría y luego filtramos 
+las interacciones que tenían el score en blanco y aquellas cuyo animeId no estuviese entre los 
+animés que consideramos.
+Este proceso bajó el tamaño de nuestra base de datos de 13.7 Gb a solo 23 Mb.
 
 BENJAMÍN AGUILAR.
 	
